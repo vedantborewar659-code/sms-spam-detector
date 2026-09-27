@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from ucimlrepo import fetch_ucirepo
+
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
@@ -89,12 +89,17 @@ st.markdown("""
 @st.cache_data
 def load_data():
 
-    dataset = fetch_ucirepo(id=228)
+    url = (
+        "https://raw.githubusercontent.com/justmarkham/"
+        "pycon-2016-tutorial/master/data/sms.tsv"
+    )
 
-    data = dataset.data.original.copy()
-
-    # Rename columns
-    data.columns = ["label", "message"]
+    data = pd.read_csv(
+        url,
+        sep="\t",
+        header=None,
+        names=["label", "message"]
+    )
 
     data["label"] = data["label"].astype(str).str.lower()
     data["message"] = data["message"].astype(str)
